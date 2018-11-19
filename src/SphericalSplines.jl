@@ -3,16 +3,16 @@ module SphericalSplines
 using LinearAlgebra
 using GSL
 
-export SplineSolution
+export InterpolationSpline
 
 
 """
-    SplineSolution
+    InterpolationSpline
 
 A callable type representing a spherical spline interpolation solution.
 
 """
-struct SplineSolution
+struct InterpolationSpline
     c::Float64
     a::Array{Float64,1}
     directions::Array{Float64,2}
@@ -20,24 +20,24 @@ end
 
 
 """
-    SplineSolution(directions, values)
+    InterpolationSpline(directions, values)
 
-Return a `SplineSolution` function computed from the given directions and values.
+Return a `InterpolationSpline` function computed from the given directions and values.
 
 """
-function SplineSolution(directions, values)
+function InterpolationSpline(directions, values)
     c, a = spline_solution(directions, values)
-    return SplineSolution(c, a, directions)
+    return InterpolationSpline(c, a, directions)
 end
 
 
 """
-    (S::SplineSolution)(direction)
+    (S::InterpolationSpline)(direction)
 
 Return the value of the interpolation spline solution in the given direction.
 
 """
-function (S::SplineSolution)(direction)
+function (S::InterpolationSpline)(direction)
     theta, phi = angles(direction)
     result = S.c 
     N = size(S.a)[1]
