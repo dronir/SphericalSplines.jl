@@ -1,7 +1,6 @@
 module SphericalSplines
 
 using LinearAlgebra
-using GSL
 
 export InterpolationSpline, SmoothingSpline
 
@@ -70,7 +69,8 @@ end
 """
     angles(v::Vector)
 
-Get direction angles from vector.
+Get direction angles from vector. Returns `(theta, phi)` where `theta` is the angle from
+the _z_ axis and `phi` is the angle in the _xy_-plane. 
 
 """
 angles(v::Vector) = (acos(v[3]), atan(v[2], v[1]))
@@ -78,55 +78,11 @@ angles(v::Vector) = (acos(v[3]), atan(v[2], v[1]))
 
 
 """
-    sphY(l::Integer, m::Integer, theta::Real, phi::Real)
 
-Real-valued spherical harmonic basis function of degree `l`, order `m` at `(theta,
-phi)`.
+    Green(a::Vector, b::Vector)
 
-Computed using the GSL function `sf_legendre_sphPlm_e`.
-
-"""
-function sphY(l::Integer, m::Integer, theta::Real, phi::Real)
-    ct = cos(theta)
-    res = sqrt(2) * sf_legendre_sphPlm_e(l, abs(m), ct).val * (-1)^m
-    return m<0 ? -res * sin(m*phi) : res * cos(m*phi)
-end
-
-
-"""
-
-    fundamental_system(directions::Array{Float64,2})
-
-Create a 'fundamental system', a matrix where each column has the spherical harmonics of
-
-
-"""
-function fundamental_system(directions::Array)
-    N = size(directions)[1]
-    if size(directions)[2] != 3
-        error("Expected shape (:,3), got $(size(directions))")
-    end
-    M = floor(Int, sqrt(N))
-    result = zeros(M^2, N)
-    for n = 1:N
-        theta, phi = angles(directions[n,:])
-        k = 0
-        for l = 0:M-1
-            for m = -l:l
-                k += 1
-                result[k,n] = sphY(l, m, theta, phi)
-            end
-        end
-    end
-    return result
-end
-
-
-"""
-
-    Green(a, b)
-
-Green's function for the iterated Beltrami operator, where `a` and `b` are two directions.
+Green's function for the iterated Beltrami operator, where `a` and `b` are two direction
+vector.
 
 """
 function Green(a::Vector, b::Vector)
@@ -170,11 +126,14 @@ function Li2(x::Real ; tol=0.0001)
 end
 
 
+
 """
     Gmatrix(directions::Array)
 
 Given a list of direction vectors (each row of `directions` corresponding to a vector),
 computes the G matrix used for solving the spline coefficients.
+
+TODO: Could be optimized a little for performance if necessary.
 
 """
 function Gmatrix(directions::Array)
@@ -187,6 +146,7 @@ function Gmatrix(directions::Array)
     end
     return G
 end
+
 
 
 """
@@ -207,6 +167,7 @@ function interpolation_solution(directions, y)
     
     return c, a
 end
+
 
 
 """
