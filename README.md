@@ -4,6 +4,17 @@
 Spherical spline interpolation. Quick and dirty implementation, could possibly be optimized
 a little.
 
+Based on:
+
+- [Blick, C. & Freeden, W. (2011). Spherical Spline Application to Radio Occultation Data.
+  Journal of Geodetic Science, 1(4), pp. 379-395. Retrieved 20 Nov. 2018, from
+  doi:10.2478/v10156-011-0017-8.][1]
+  
+- [Blick, C. (2012). Spherical Spline Approximation and its Application to Radio Occultation
+  Data for Climate Monitoring. 2nd International Radio Occultation Workshop 2012.][2]
+
+[1]: https://www.degruyter.com/view/j/jogs.2011.1.issue-4/v10156-011-0017-8/v10156-011-0017-8.xml
+[2]: http://irowg.org/wpcms/wp-content/uploads/2013/12/blick.pdf
 
 ## Usage
 
