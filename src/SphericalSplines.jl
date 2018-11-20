@@ -145,9 +145,8 @@ coefficients of the spherical interpolation spline.
 
 """
 function interpolation_solution(directions, y)
-    A = ones(size(directions)[1])'
     G = Gmatrix(directions)
-    return solve_coefs(A, G, y)
+    return solve_coefs(G, y)
 end
 
 
@@ -160,20 +159,20 @@ coefficients of the spherical smoothing spline.
 
 """
 function smoothing_solution(directions::Array, y::Vector, weights::Vector, smoothing::Real)
-    A = ones(size(directions)[1])'
     G = Gmatrix(directions) + smoothing .* Diagonal(weights.^2)
-    return solve_coefs(A, G, y)
+    return solve_coefs(G, y)
 end
 
 
 
 """
-    solve_coefs(A, G, y)
+    solve_coefs(G, y)
 
-Solve for spline coefficients `c` and `a`, given the matrices `A`, `G` and the values `y`.
+Solve for spline coefficients `c` and `a`, given the matrix `G` and the values `y`.
 
 """
-function solve_coefs(A, G, y)
+function solve_coefs(G, y)
+    A = ones(size(directions)[1])'
     Gi = inv(G)
     c = inv(A * Gi * A') * A * Gi * y
     a = Gi * A' * c - Gi * y
