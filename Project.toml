@@ -1,7 +1,7 @@
 name = "SphericalSplines"
 uuid = "3bde4124-ddb3-11e8-1e08-e37fcff744c7"
 authors = ["Olli Wilkman <olli.wilkman@iki.fi>"]
-version = "0.1.0"
+version = "0.5"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
