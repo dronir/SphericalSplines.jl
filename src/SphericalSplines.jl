@@ -20,7 +20,7 @@ end
 
 
 """
-    (S::SplineSolution)(direction)
+    (S::SplineSolution)(direction::Vector)
 
 Return the value of the spline solution in the given direction.
 
@@ -37,7 +37,7 @@ end
 
 
 """
-    InterpolationSpline(directions, values)
+    InterpolationSpline(directions::Array, values::Vector)
 
 Return a `SplineSolution` function giving an interpolation spline for the given directions
 and values. This spline solution goes through all the given values.
@@ -51,7 +51,7 @@ end
 
 
 """
-    SmoothingSpline(directions, values, weights, smoothing)
+    SmoothingSpline(directions::AbstractArray, values::Vector, weights::Vector, smoothing::Real)
 
 Return a `SplineSolution` function giving a smoothing spline solution. This solution does
 not pass exactly through each value, and how closely it approximates them depends on the
@@ -70,7 +70,7 @@ end
     Green(a::Vector, b::Vector)
 
 Green's function for the iterated Beltrami operator, where `a` and `b` are two direction
-vector.
+vectors.
 
 """
 function Green(a::Vector, b::Vector)
@@ -144,7 +144,7 @@ Given a list of directions as an `(N,3)` array, and an `(N,)` array of values, s
 coefficients of the spherical interpolation spline.
 
 """
-function interpolation_solution(directions, y)
+function interpolation_solution(directions::Array, y::Vector)
     G = Gmatrix(directions)
     return solve_coefs(G, y)
 end
@@ -152,7 +152,7 @@ end
 
 
 """
-    smoothing_solution(directions::Array, y::Vector)
+    smoothing_solution(directions::Array, y::Vector, weights::Vector, smoothing::Real)
 
 Given a list of directions as an `(N,3)` array, and an `(N,)` array of values, compute the
 coefficients of the spherical smoothing spline.
@@ -166,12 +166,12 @@ end
 
 
 """
-    solve_coefs(G, y)
+    solve_coefs(G::Array, y::Vector)
 
 Solve for spline coefficients `c` and `a`, given the matrix `G` and the values `y`.
 
 """
-function solve_coefs(G, y)
+function solve_coefs(G::Array, y::Vector)
     A = ones(size(directions)[1])'
     Gi = inv(G)
     c = inv(A * Gi * A') * A * Gi * y
