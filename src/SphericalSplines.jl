@@ -22,11 +22,10 @@ end
 """
     (S::SplineSolution)(direction)
 
-Return the value of the interpolation spline solution in the given direction.
+Return the value of the spline solution in the given direction.
 
 """
 function (S::SplineSolution)(direction::Vector)
-    theta, phi = angles(direction)
     result = S.c 
     N = size(S.a)[1]
     for k = 1:N
