@@ -144,9 +144,14 @@ Given a list of directions as an `(N,3)` array, and an `(N,)` array of values, s
 coefficients of the spherical interpolation spline.
 
 """
+<<<<<<< HEAD
 function interpolation_solution(directions::Array, y::Vector)
+=======
+function interpolation_solution(directions, y)
+    A = ones(size(directions)[1])'
+>>>>>>> parent of c11a1f2... Simplify solution functions ever more slightly
     G = Gmatrix(directions)
-    return solve_coefs(G, y)
+    return solve_coefs(A, G, y)
 end
 
 
@@ -159,20 +164,29 @@ coefficients of the spherical smoothing spline.
 
 """
 function smoothing_solution(directions::Array, y::Vector, weights::Vector, smoothing::Real)
+    A = ones(size(directions)[1])'
     G = Gmatrix(directions) + smoothing .* Diagonal(weights.^2)
-    return solve_coefs(G, y)
+    return solve_coefs(A, G, y)
 end
 
 
 
 """
+<<<<<<< HEAD
     solve_coefs(G::Array, y::Vector)
+=======
+    solve_coefs(A, G, y)
+>>>>>>> parent of c11a1f2... Simplify solution functions ever more slightly
 
-Solve for spline coefficients `c` and `a`, given the matrix `G` and the values `y`.
+Solve for spline coefficients `c` and `a`, given the matrices `A`, `G` and the values `y`.
 
 """
+<<<<<<< HEAD
 function solve_coefs(G::Array, y::Vector)
     A = ones(size(directions)[1])'
+=======
+function solve_coefs(A, G, y)
+>>>>>>> parent of c11a1f2... Simplify solution functions ever more slightly
     Gi = inv(G)
     c = inv(A * Gi * A') * A * Gi * y
     a = Gi * A' * c - Gi * y
