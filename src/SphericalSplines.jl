@@ -66,17 +66,6 @@ end
 
 
 """
-    angles(v::Vector)
-
-Get direction angles from vector. Returns `(theta, phi)` where `theta` is the angle from
-the _z_ axis and `phi` is the angle in the _xy_-plane. 
-
-"""
-angles(v::Vector) = (acos(v[3]), atan(v[2], v[1]))
-
-
-
-"""
 
     Green(a::Vector, b::Vector)
 
