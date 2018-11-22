@@ -75,12 +75,18 @@ vectors.
 """
 function Green(a::Vector, b::Vector)
     d = dot(a, b)
-    if d ≈ 1
+    if d ≈ 1.0
         return 1.0 / (4π)
-    end
-    if d ≈ -1
+    elseif d ≈ -1.0
         return 1.0 / (4π) - π/24
     end
+    
+    l2 = log(2)
+    
+    if d ≈ 0.0
+        return (1 - π^2/12 + l2^2 * (-0.5)) / 4π
+    end
+    
     l2 = log(2)
 
     t1 = log(1 - d) * (log(1 + d) - l2)
@@ -93,13 +99,13 @@ end
 
 
 """
-    Li2(x::Real ; tol=0.0001)
+    Li2(x::Real ; tol=0.00001)
 
 Compute dilogarithm function to desired tolerance using simple series representation. 
 TODO: is there a better way?
 
 """
-function Li2(x::Real ; tol=0.0001)
+function Li2(x::Real ; tol=0.00001)
     s = 0.0
     sp = 0.0
     k = 0
